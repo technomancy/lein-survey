@@ -20,7 +20,7 @@
                   "1.5 (Mar 2011)"
                   "1.6 (Jun 2011)"
                   "2.0.0-SNAPSHOT"]]
-                ["Your OS and package manager" :check
+                ["Your OS and package manager(s)" :check
                  ["Debian/Ubuntu"
                   "Fedora/other RPM-based"
                   "Arch" "Gentoo" "Nix"
@@ -56,14 +56,14 @@
                   "Shell wrappers"
                   "Test selectors"
                   "trampoline task"]]
-                ["Favourite plugins?" :textarea 2]
+                ["Favourite plugins? (comma-separated)" :textarea 2]
                 ["Rank your biggest annoyances:" :rank
                  ["Startup time"
                   "Difficulty finding dependencies"
                   "Not enough plugins"
                   "Leiningen's own end-user docs"
                   "Docs on extending Leiningen or writing plugins"
-                  "ClojureScript"]]
+                  "ClojureScript integration"]]
                 ["Do you have custom tasks you haven't published as a plugin?"
                  :radio
                  ["Yes" "No"]]

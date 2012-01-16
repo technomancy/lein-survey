@@ -30,7 +30,7 @@
        [:ul.rank
         (for [n (reverse (range (count answers)))]
           [:li [:label [:input {:type "radio"
-                                :name (str question "-" a) :value n}]
+                                :name (str question " " a) :value n}]
                 [:span n]]])]])]])
 
 (defmethod input :textarea [[question _ rows]]
@@ -60,7 +60,7 @@
       [:div.row
        [:div.span10
         [:p (str "Do you use Leiningen? We'd love it if you could take a few"
-                 "minutes to answer some questions.")]]]
+                 " minutes to answer some questions.")]]]
 
       [:div.row
        [:div.span10.offset1
