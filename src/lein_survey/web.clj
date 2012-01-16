@@ -1,19 +1,17 @@
 (ns lein-survey.web
   (:require [lein-survey.render :as render]
             [lein-survey.questions :as q]
-            [compojure.core :as compojure]
             [ring.adapter.jetty :as jetty]
             [clojure.java.jdbc :as sql]
             [ring.middleware.params :as params]
-            [ring.middleware.resource :as resource]
-            [compojure.route :as route]))
+            [ring.middleware.resource :as resource]))
 
 (defn create-table []
   (sql/with-connection (or (System/getenv "DATABASE_URL")
                            "postgres://localhost:5432/lein-survey")
     (sql/create-table :answers
                       [:id :serial "PRIMARY KEY"]
-                      [:body :varchar "NOT NULL"]
+                      [:body :text "NOT NULL"]
                       [:timestamp :timestamp "NOT NULL"
                        "DEFAULT CURRENT_TIMESTAMP"])))
 

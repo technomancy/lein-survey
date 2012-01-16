@@ -7,7 +7,7 @@
 
 (defmethod input :radio [[question _ answers]]
   [:div
-   [:p question]
+   [:p.question question]
    [:ul.inputs-list
     (for [a answers]
       [:li [:label [:input {:type "radio" :name question :value a}]
@@ -15,7 +15,7 @@
 
 (defmethod input :check [[question _ answers]]
   [:div
-   [:p question]
+   [:p.question question]
    [:ul.inputs-list
     (for [a answers]
       [:li [:label [:input {:type "checkbox" :name question :value a}]
@@ -23,18 +23,19 @@
 
 (defmethod input :rank [[question _ answers]]
   [:div
-   [:p question]
-   [:ul.inputs-list
+   [:p.question question]
+   [:ul
     (for [a answers]
-      [:li [:span a]
-       [:ul.inputs-list
+      [:li.ranking [:span a]
+       [:ul.rank
         (for [n (reverse (range (count answers)))]
-          [:li.float [:label [:input {:type "radio" :name (str question "-" a)
-                                      :value n}]
-                      [:span n]]])]])]])
+          [:li [:label [:input {:type "radio"
+                                :name (str question "-" a) :value n}]
+                [:span n]]])]])]])
 
 (defmethod input :textarea [[question _ rows]]
-  [:div [:p question] [:textarea.xxlarge {:rows (or rows 5) :name question}]])
+  [:div [:p.question question]
+   [:textarea.xxlarge {:rows (or rows 5) :name question}]])
 
 (defn questions-form [questions]
   [:form {:method "POST" :action "/"}

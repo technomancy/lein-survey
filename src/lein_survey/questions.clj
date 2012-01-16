@@ -1,17 +1,6 @@
 (ns lein-survey.questions)
 
-(def questions [["When did you start using Leiningen?" :radio
-                 ["0.5 (Nov 2009)"
-                  "1.0 (Dec 2009)"
-                  "1.1 (Feb 2010)"
-                  "1.2 (Jul 2010)"
-                  "1.3 (Aug 2010)"
-                  "1.4 (Dec 2010)"
-                  "1.5 (Mar 2011)"
-                  "1.6 (Jun 2011)"
-                  "2.0.0-SNAPSHOT"
-                  "I don't remember"]]
-                ["How long have you been using Clojure?" :radio
+(def questions [["How long have you been using Clojure?" :radio
                  ["Just started" "Weeks" "Months" "1 year" "2 years" "3+ years"]]
                 ["For what do you use Leiningen? (pick as many as apply)" :check
                  ["Open source" "Proprietary projects"
@@ -20,6 +9,17 @@
                 ["Do you deploy jars?" :check
                  ["to Clojars" "to other public repositories"
                   "to private repositories"]]
+                ["When did you start using Leiningen?" :radio
+                 ["I don't remember"
+                  "0.5 (Nov 2009)"
+                  "1.0 (Dec 2009)"
+                  "1.1 (Feb 2010)"
+                  "1.2 (Jul 2010)"
+                  "1.3 (Aug 2010)"
+                  "1.4 (Dec 2010)"
+                  "1.5 (Mar 2011)"
+                  "1.6 (Jun 2011)"
+                  "2.0.0-SNAPSHOT"]]
                 ["Your OS and package manager" :check
                  ["Debian/Ubuntu"
                   "Fedora/other RPM-based"
@@ -39,14 +39,13 @@
                  ["Downloading bin/lein"
                   "Package manager"
                   "Git"]]
-                [(str "Paste your stats for: history | grep \"lein \" | "
+                [(str "Paste your results: history | grep \"lein \" | "
                       "awk '{print $3}' | sort | uniq -c | sort -nr | "
                       "egrep -v \"^ +1\"") :textarea]
                 ["Which Leiningen features do you use?" :check
                  ["Auto-cleaning of transitively-compiled .class files"
                   "Checkout dependencies"
                   "clean task"
-                  "Custom options to :repositories"
                   "Editor integration"
                   "interactive task"
                   "javac task"
@@ -57,8 +56,8 @@
                   "Shell wrappers"
                   "Test selectors"
                   "trampoline task"]]
-                ["Favourite plugins?" :textarea]
-                ["Biggest problem/annoyance?" :rank
+                ["Favourite plugins?" :textarea 2]
+                ["Rank your biggest annoyances:" :rank
                  ["Startup time"
                   "Difficulty finding dependencies"
                   "Not enough plugins"
