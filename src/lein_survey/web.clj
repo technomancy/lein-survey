@@ -37,3 +37,9 @@
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 5000))]
     (jetty/run-jetty #'app {:port port})))
+
+(defn total []
+  (clojure.java.jdbc/with-connection (or (System/getenv "DATABASE_URL")
+                                         "postgres://localhost:5432/lein-survey")
+    (clojure.java.jdbc/with-query-results res ["select count(*) from answers"]
+      (println res))))

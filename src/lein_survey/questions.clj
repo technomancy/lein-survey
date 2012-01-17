@@ -57,7 +57,7 @@
                   "Test selectors"
                   "trampoline task"]]
                 ["Favourite plugins? (comma-separated)" :textarea 2]
-                ["Rank your biggest annoyances:" :rank
+                ["Rank your biggest annoyances: (higher is worse)" :rank
                  ["Startup time"
                   "Difficulty finding dependencies"
                   "Not enough plugins"
