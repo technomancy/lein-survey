@@ -4,7 +4,7 @@
                  ["Just started" "Weeks" "Months" "1 year" "2 years" "3+ years"]]
                 ["For what do you use Leiningen? (pick as many as apply)" :check
                  ["Open source" "Proprietary projects"
-                  "Libraries" "Web sites"
+                  "Libraries" "Web sites" "Deployment"
                   "Backend code" "GUI clients" "Command-line applications"]]
                 ["Do you deploy jars?" :check
                  ["to Clojars" "to other public repositories"
@@ -28,7 +28,7 @@
                   "Mac OS X with Homebrew"
                   "Mac OS X with Macports"
                   "Mac OS X with Fink"
-                  "Mac OS X other"
+                  "Mac OS X with no package manager"
                   "Windows with Powershell"
                   "Windows without Powershell"
                   "Windows with Cygwin"
