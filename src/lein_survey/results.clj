@@ -27,26 +27,26 @@
     (clojure.java.jdbc/with-query-results res ["select count(*) from answers"]
       (println res))))
 
-(defmulti summarize-question (fn [answers question] (second question)))
+(defmulti summarize-question (fn [results question] (second question)))
 
-(defmethod summarize-question :radio [answers [q _ choices]]
+(defmethod summarize-question :radio [results [q _ choices]]
   (let [freqs (frequencies (for [r results] (get r q)))]
     [:div.answer
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
                           [[:dt choice] [:dd (freqs choice)]]))]]))
 
-(defmethod summarize-question :check [answers [q _ choices]]
-  (let [answers (apply concat (for [r results] (setize (get r q))))
-        freqs (frequencies answers)]
+(defmethod summarize-question :check [results [q _ choices]]
+  (let [results-sets (apply concat (for [r results] (setize (get r q))))
+        freqs (frequencies results-sets)]
     [:div.answer
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
                           [[:dt choice] [:dd (freqs choice)]]))]]))
 
-(defmethod summarize-question :textarea [answers [q _ choices]])
+(defmethod summarize-question :textarea [results [q _ choices]])
 
-(defmethod summarize-question :rank [answers [q _ choices]]
+(defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
                         (frequencies (for [r results]
                                        (setize (get r (str q " " %))))))]
@@ -57,8 +57,6 @@
              (for [[rank count] (freqs choice)
                    :when (not= rank #{nil})]
                (str " | " (first rank) " - " count))])]]))
-
-
 
 (defn summary []
   (let [results (get-results)]
