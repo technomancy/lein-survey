@@ -15,7 +15,7 @@
   (sql/with-connection (or (System/getenv "DATABASE_URL")
                            "postgres://localhost:5432/lein-survey")
     (sql/with-query-results results ["select * from answers"]
-      (doall (map (comp pr-str merge-results) results)))))
+      (pr-str (map merge-results results)))))
 
 (def results-url (java.net.URL. "http://lein-survey.herokuapp.com/results.clj"))
 
