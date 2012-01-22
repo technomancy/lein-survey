@@ -31,6 +31,10 @@
         {:status 200
          :headers {"Content-type" "application/x-clojure"}
          :body (results/results-str)}
+        (= "/results" (:uri req))
+        {:status 200
+         :headers {"Content-type" "text/html"}
+         :body (render/layout (results/summary))}
         :else
         {:status 200
          :headers {"Content-type" "text/html"}
