@@ -1,5 +1,6 @@
 (ns lein-survey.results
-  (:require [clojure.java.jdbc :as sql]
+  (:require [clojure.set] ; work around incanter bug
+            [clojure.java.jdbc :as sql]
             [clojure.pprint :as pprint]
             [clojure.string :as string]
             [clojure.java.io :as io]
