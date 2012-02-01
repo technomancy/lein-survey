@@ -1,0 +1,8 @@
+Startup time dominates here, as expected. Docs aren't too much of an
+issue, though docs for end users appear to be better than the docs for
+extending Leiningen itself. People seem to be pretty satisfied with
+plugin selection. ClojureScript is an issue, but the recent official
+release will help here, as well as progress on the lein-cljsbuild
+plugin. Finding dependencies is also tricky. Hopefully some of the
+data from ClojureSphere can be fed back into Clojars to help make this
+clearer.

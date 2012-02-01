@@ -43,6 +43,11 @@
 (defn img-link [q]
   (format "/%s.png" (hash-question q)))
 
+(defn percent-freqs [f choice results]
+  (let [n (f choice)
+        total (count results)]
+    (format "%s (%s%%)" n (int (* 100 (/ n total))))))
+
 (defmulti summarize-question (fn [results question] (second question)))
 
 (defmethod summarize-question :radio [results [q _ choices]]
@@ -51,7 +56,8 @@
      [:img {:src (img-link q) :align "right"}]
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
-                          [[:dt choice] [:dd (freqs choice)]]))]
+                          [[:dt choice] [:dd (percent-freqs
+                                              freqs choice results)]]))]
      (commentary q)]))
 
 (defmethod summarize-question :check [results [q _ choices]]
@@ -59,9 +65,12 @@
         freqs (frequencies results-sets)]
     [:div.answer
      [:img {:src (img-link q) :align "right"}]
+     (if (= q "Your OS and package manager(s)")
+       [:img {:src (img-link (str q "-2")) :align "right"}])
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
-                          [[:dt choice] [:dd (freqs choice)]]))]
+                          [[:dt choice] [:dd (percent-freqs
+                                              freqs choice results)]]))]
      (commentary q)]))
 
 (defmethod summarize-question :textarea [results [q _ choices]]
@@ -79,11 +88,31 @@
             [:li choice
              (for [[rank count] (freqs choice)
                    :when (not= rank #{nil})]
-               (str " | " (first rank) " - " count))])]]))
+               (str " | " count))])]
+     [:p "The chart's missing for this one on account of getting in a fight "
+      "with Incanter's stacked bar chart and losing."]
+     (commentary q)]))
 
 (defn summary []
   (let [results (get-results)]
-    (into [:div.summary]
+    (into [:div.summary
+           [:h3 "Data and commentary on the results"]
+           [:p "The survey has been open since the 16th of January,"
+            " but it hasn't closed, so the quantatative summaries below"
+            " will reflect new responses as they trickle in."
+            " Most questions allowed more than one answer, so percentages"
+            " will not add up to 100."]
+           [:p "It may be interesting to compare some of these results "
+            "with Chas Emerick's "
+            [:a {:href (str "http://cemerick.com/2011/07/11/results-of-the-"
+                            "2011-state-of-clojure-survey/")}
+             "State of Clojure"] " survey from last summer."]
+           [:p "You can see "
+            [:a {:href "https://github.com/technomancy/lein-survey"}
+             "the source"] " for this survey on Github or get the "
+            [:a {:href "/results.clj"} "raw results"]
+            " for your own analysis."]
+           [:p "Total responses: " (count results)]]
           (map (partial summarize-question results) q/questions))))
 
 (def os-map {"Debian/Ubuntu" :linux
@@ -141,23 +170,56 @@
                          :x-label "" :y-label ""
                          :title q :vertical false))))
 
+(defn get-ranks [result]
+  (into {} (for [[q rank] result
+                 :when (.startsWith (name q) "Rank your biggest")
+                 :let [annoyance (second (.split (name q) ": "))]]
+             [annoyance rank])))
+
+(defn stacked-bar [q results]
+  (let [ranks (map get-ranks results)
+        categories (keys (first ranks))
+        values (for [category categories
+                     ranking ranks
+                     [annoyance number] ranking
+                     :when (= category annoyance)]
+                 [category number])
+        ;; rankings (reduce (fn [acc [q n]]
+        ;;                    (update-in acc [q] conj (Integer. n)))
+        ;;                  (zipmap categories (repeat (count categories) []))
+        ;;                  values)
+        categories (map first values)
+        values (map (comp #(Integer. %) second) values)]
+    ;; grraaaah; stupid stacked bar charts can suck it
+    (charts/stacked-bar-chart categories values
+                              :x-label "" :y-label ""
+                              :title "Biggest annoyances" :vertical false)))
+
 (defn chart [q type results]
   (cond (= "How long have you been using Clojure?" q)
         (bar q results)
         (= :radio type)
         (pie q results)
         (= :check type)
-        (bar q results)))
-;; :rank stacked-bar-chart
+        (bar q results)
+        (= :os type)
+        (pie q results os-lookup)
+        ;; (= :rank type)
+        ;; (stacked-bar q results)
+        ))
 
 (def hashed-questions (into {} (for [q q/questions]
                                  [(hash-question (first q)) q])))
 
-(defonce image
+(def image-bytes
   (memoize (fn [id]
-             (let [[q type] (hashed-questions id)
+             (let [[q type] (hashed-questions
+                             id ["Your OS and package manager(s)" :os])
                    out (java.io.ByteArrayOutputStream.)
                    results (get-results)
                    chart (chart q type results)]
                (incanter/save chart out)
-               (java.io.ByteArrayInputStream. (.toByteArray out))))))
+               (.toByteArray out)))))
+
+(defn image [id]
+  (java.io.ByteArrayInputStream. (image-bytes id)))

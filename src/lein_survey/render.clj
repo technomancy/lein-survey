@@ -38,10 +38,17 @@
    [:textarea.xxlarge {:rows (or rows 5) :name question}]])
 
 (defn questions-form [questions]
-  [:form {:method "POST" :action "/"}
-   (concat (map input questions)
-           [[:div.content [:input.btn.primary {:type "submit"
-                                               :value "Answer"}]]])])
+  [:div
+   [:div.row
+       [:div.span10
+        [:p "The survey results are "
+         [:a {:href "/results"} "available"]
+         ", but you can still fill it out if you like."]]]
+   [:hr]
+   [:form {:method "POST" :action "/"}
+    (concat (map input questions)
+            [[:div.content [:input.btn.primary {:type "submit"
+                                                :value "Answer"}]]])]])
 
 (defn layout [content]
   (html5
@@ -56,11 +63,6 @@
      [:div.content
       [:div.page-header
        [:h1 "Leiningen Survey"]]
-
-      [:div.row
-       [:div.span10
-        [:p (str "Do you use Leiningen? We'd love it if you could take a few"
-                 " minutes to answer some questions.")]]]
 
       [:div.row
        [:div.offset1

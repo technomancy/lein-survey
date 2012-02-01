@@ -4,8 +4,8 @@
             [lein-survey.results :as results]
             [ring.adapter.jetty :as jetty]
             [clojure.java.jdbc :as sql]
-            [ring.middleware.params :as params]
-            [ring.middleware.resource :as resource]))
+            [clojure.java.io :as io]
+            [ring.middleware.params :as params]))
 
 (defn create-table []
   (sql/with-connection (or (System/getenv "DATABASE_URL")
@@ -39,14 +39,18 @@
         {:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (results/summary))}
-        :else
+        ;; WTF wrap-resource; why are you trying to serve a directory?
+        (re-find #"\.css$" (:uri req))
+        {:status 200
+         :headers {"Content-type" "text/css"}
+         :body (slurp (io/resource (str "public/" (:uri req))))}
+        (= "/" (:uri req))
         {:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (render/questions-form q/questions))}))
 
 (def app (-> handler
-             params/wrap-params
-             (resource/wrap-resource "/public")))
+             params/wrap-params))
 
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 5005))]
