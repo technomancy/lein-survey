@@ -153,10 +153,11 @@
 (def hashed-questions (into {} (for [q q/questions]
                                  [(hash-question (first q)) q])))
 
-(defn image [id]
-  (let [[q type] (hashed-questions id)
-        out (java.io.ByteArrayOutputStream.)
-        results (get-results)
-        chart (chart q type results)]
-    (incanter/save chart out)
-    (java.io.ByteArrayInputStream. (.toByteArray out))))
+(defonce image
+  (memoize (fn [id]
+             (let [[q type] (hashed-questions id)
+                   out (java.io.ByteArrayOutputStream.)
+                   results (get-results)
+                   chart (chart q type results)]
+               (incanter/save chart out)
+               (java.io.ByteArrayInputStream. (.toByteArray out))))))
