@@ -27,6 +27,10 @@
         {:status 201
          :headers {"Content-type" "text/html"}
          :body (record (:params req))}
+        (re-find #"^/.*\.png$" (:uri req))
+        {:status 200
+         :headers {"Content-type" "image/png"}
+         :body (results/image (second (re-find #"^/(.*)\.png$" (:uri req))))}
         (= "/results.clj" (:uri req))
         {:status 200
          :headers {"Content-type" "application/x-clojure"}

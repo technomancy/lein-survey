@@ -1,0 +1,104 @@
+<h4>Other Comments Summarized</h4>
+
+<p>Lots of people want the features in Leiningen 2. Some are
+  asking for stuff that's already been implemented in the master
+  branch, so that makes me think we're on the right track.</p>
+
+<blockquote>I still think lein-multi should be rolled into core so people can be
+  encouraged to test cross-version.</blockquote>
+
+<p>This is done; profiles in Leiningen 2 replace lein-multi in a much
+  more flexible way.</p>
+
+<blockquote>I dislike having to rename README to README.md each time after doing
+  lein new.</blockquote>
+
+<p>The <tt>lein new</tt> task in 2.0 supports flexible templates for
+  project skeletons, (the default emits README.md) and best of all
+  it's <a href="https://github.com/Raynes/lein-newnew">usable from
+  Leiningen 1 as well</a>.</p>
+
+<blockquote>Please copy cake's approach to managing conflicts in clojure version
+  dependencies.  "lein deps" brings down two versions of clojure for a
+  web app that I'm working on, while "cake deps" doesn't.</blockquote>
+
+<p>We're also splitting <tt>:dev-dependencies</tt> into two separate
+  lists, <tt>:plugins</tt> that run in Leiningen's process and
+  profile-scoped dependencies for dev-time dependencies that run
+  inside the actual project. This will take care of de-duplication,
+  which has always been a problem with plugins that aren't careful
+  about their dependency lists.</p>
+
+<blockquote>I hope 2.0 will be backwards-compatible for end users of 1.6 (not
+  plugin developers).</blockquote>
+
+<p>I've tried to avoid gratuitous breakage, but there are some things
+  that are unavoidable. My hope is to offer a <tt>lein precate</tt>
+  plugin (the opposite of deprecate, of course) that can suggest
+  changes to your project.clj file to bring it in line with version
+  2.</p>
+
+<p>I was not at all surprised to find startup time mentioned quite a
+  few times. The upcoming 1.7.0 release uses tiered compilation to
+  allow for quicker JVM startup on newer 64-bit JVMs; simple tasks can
+  complete in around a second even without an SSD. Still not great,
+  but a big improvement in some cases.</p>
+
+<p>And then there were plenty of generally positive comments. A few of
+  my favourites:</p>
+
+<blockquote>The only criticism is that lein clearly insulates me from all sorts of
+  Java nastiness, and that's probably bad for my moral fibre.</blockquote>
+
+<blockquote>I come from a maven background and resisted using leiningen for
+  a while. I was an idiot.</blockquote>
+
+<blockquote>Helped me convince my team to use Clojure over Scala.</blockquote>
+
+<blockquote>Writing a plugin was easier and more enjoyable than I expected.</blockquote>
+
+<blockquote>I wonder what my girlfriend would think of a red heart with a blue
+  arrow and "Leiningen forever!" underneath?</blockquote>
+
+<p>It's always encouraging to hear things like that, so thanks!</p>
+
+<blockquote>Leiningen is great, it just needs more documentation love
+  and more refinements for complex/multi-module builds, startup time,
+  Java-compilation (and JVM langs compilation via plugins) and so
+  on.</blockquote>
+
+<p>Definitely interested in getting feedback from folks with
+  complicated builds. I
+  think <a href="https://github.com/kumarshantanu/lein-sub">lein-sub</a>
+  has potential to help make larger projects more manageable by
+  allowing you to break them down into multiple smaller projects, but
+  larger projects often have unique requirements. And of course,
+  plugins that target other JVM languages are only going to happen if
+  users of those languages step up.</p>
+
+<blockquote>Having used build scripts, make, rake, sbt and leiningen, I'd say
+  leiningen ranks far above the non-make crowd. (sorry. Make rules.)</blockquote>
+
+<p>Apparently there are people who like <tt>make</tt>! I did not know this.</p>
+
+<blockquote>One (very) minor annoyance with the docs was figuring out
+  checkout dependencies. It wasn't clear at first whether I needed to
+  change project.clj for either the main project or the checkout, and
+  whether the checkout would take precedence over libs from remote
+  repos.</blockquote>
+
+<p>I've noticed again and again that checkout dependencies confuse a
+  lot of people, but I have yet to figure out why or how they could be
+  explained more clearly.</p>
+
+<blockquote>One area that I am interested in is managing and packaging
+  generic and non generic clojure code - for jvm/cljs/clr
+  effectively.</blockquote>
+
+<p>This is definitely an open question, and I think to an extent time
+  will tell how this will shake out. At some point we'll probably have
+  whole libraries that can run on the various runtimes, and having
+  subsets of a project that can run in Javascript or the JVM is
+  actually already possible with
+  the <a href="http://github.com/emezeske/lein-cljsbuild">lein-cljsbuild</a>
+  plugin. But only experience will tell us what works here.</p>

@@ -63,5 +63,5 @@
                  " minutes to answer some questions.")]]]
 
       [:div.row
-       [:div.span10.offset1
+       [:div.offset1
         content]]]]]))

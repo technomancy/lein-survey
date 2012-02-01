@@ -42,3 +42,16 @@ p.question {
     margin-top: 1em;
     font-weight: bold;
 }
+
+div.answer {
+    padding: 3em 0;
+    clear: both;
+}
+
+.answer p {
+    width: 400px;
+}
+
+.answer blockquote {
+    width: 400px;
+}

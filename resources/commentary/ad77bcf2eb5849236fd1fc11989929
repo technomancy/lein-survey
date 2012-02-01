@@ -1,0 +1,4 @@
+Of course, the relevant question here is how many of these internal
+plugins are really doing something unique to their projects. My
+suspicion is that it's not very many, and that most custom tasks could
+in fact be generalized and shared with the community.

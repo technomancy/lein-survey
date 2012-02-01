@@ -2,9 +2,11 @@
   (:require [clojure.java.jdbc :as sql]
             [clojure.pprint :as pprint]
             [clojure.string :as string]
+            [clojure.java.io :as io]
             [incanter.core :as incanter]
             [incanter.charts :as charts]
-            [lein-survey.questions :as q]))
+            [lein-survey.questions :as q])
+  (:import (org.apache.commons.codec.digest DigestUtils)))
 
 (defn setize [x]
   (if (coll? x)
@@ -30,24 +32,41 @@
     (clojure.java.jdbc/with-query-results res ["select count(*) from answers"]
       (println res))))
 
+(defn hash-question [q]
+  (subs (DigestUtils/shaHex q) 10))
+
+(defn commentary [q]
+  (if-let [c (io/resource (str "commentary/" (hash-question q)))]
+    [:p (slurp c)]))
+
+(defn img-link [q]
+  (format "/%s.png" (hash-question q)))
+
 (defmulti summarize-question (fn [results question] (second question)))
 
 (defmethod summarize-question :radio [results [q _ choices]]
   (let [freqs (frequencies (for [r results] (get r q)))]
     [:div.answer
+     [:img {:src (img-link q) :align "right"}]
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
-                          [[:dt choice] [:dd (freqs choice)]]))]]))
+                          [[:dt choice] [:dd (freqs choice)]]))]
+     (commentary q)]))
 
 (defmethod summarize-question :check [results [q _ choices]]
   (let [results-sets (apply concat (for [r results] (setize (get r q))))
         freqs (frequencies results-sets)]
     [:div.answer
+     [:img {:src (img-link q) :align "right"}]
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
-                          [[:dt choice] [:dd (freqs choice)]]))]]))
+                          [[:dt choice] [:dd (freqs choice)]]))]
+     (commentary q)]))
 
-(defmethod summarize-question :textarea [results [q _ choices]])
+(defmethod summarize-question :textarea [results [q _ choices]]
+  (if (= q "Other comments?")
+    [:div.answer
+     (slurp (io/resource "comments.html"))]))
 
 (defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
@@ -100,8 +119,10 @@
   ([q results lookup]
      (let [freqs (dissoc (frequencies (map (partial lookup q) results))
                          nil "I don't remember" #{})
-           freqs (sort-by (comp str key) freqs)]
-       (charts/pie-chart (map str (keys freqs)) (vals freqs)
+           freqs (sort-by (comp str key) freqs)
+           labels (for [l (keys freqs)]
+                    (first (.split (str l) "\\(")))]
+       (charts/pie-chart labels (vals freqs)
                          :title q :legend true))))
 
 (defn bar
@@ -114,10 +135,27 @@
                          nil "I don't remember" #{} [] "")
            freqs (sort-by (comp str key) freqs)
            ;; TODO: make threshhold customizable?
-           freqs (filter (fn [[x n]] (> n 3)) freqs)
-           ]
+           freqs (filter (fn [[x n]] (> n 3)) freqs)]
        (charts/bar-chart (map str (keys freqs)) (vals freqs)
-                         :title "Favourite Plugins" :vertical false))))
+                         :x-label "" :y-label ""
+                         :title q :vertical false))))
 
-;; (incanter/view (bar "Favourite plugins? (comma-separated)" (get-results)
-;;                     (fn [q result] (vec (.split (get result q) ", *")))))
+(defn chart [q type results]
+  (cond (= "How long have you been using Clojure?" q)
+        (bar q results)
+        (= :radio type)
+        (pie q results)
+        (= :check type)
+        (bar q results)))
+;; :rank stacked-bar-chart
+
+(def hashed-questions (into {} (for [q q/questions]
+                                 [(hash-question (first q)) q])))
+
+(defn image [id]
+  (let [[q type] (hashed-questions id)
+        out (java.io.ByteArrayOutputStream.)
+        results (get-results)
+        chart (chart q type results)]
+    (incanter/save chart out)
+    (java.io.ByteArrayInputStream. (.toByteArray out))))

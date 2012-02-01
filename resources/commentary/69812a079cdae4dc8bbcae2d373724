@@ -1,0 +1,10 @@
+Part of the challenge with this question is determining whether low
+usage of a feature is caused by low demand for it or just a lack of
+knowledge about it. For instance, it's easy to overlook shell
+wrappers, and very easy to miss out on the trampoline task. The javac
+task is used surprisingly often; apparently projects that carry legacy
+code with them are pretty common. I'm curious with the clean task
+whether people use it because they know they need it or if they just
+reach for it as a first instinct when things go wrong. I'd love to see
+more people using test selectors; those can be very handy to organize
+larger test suites.

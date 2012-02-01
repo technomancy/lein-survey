@@ -1,0 +1,3 @@
+The fact that Leiningen has only been packaged for apt since the fall
+makes this not terribly surprising. Most people using git are probably
+contributors.

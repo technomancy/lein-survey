@@ -1,0 +1,3 @@
+Very surprising to see private repositories beating out Clojars,
+especially considering deployment to private repos was only added to
+Leiningen a year ago.
