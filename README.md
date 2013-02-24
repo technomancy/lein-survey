@@ -10,6 +10,6 @@ To start a web server
 
 ## License
 
-Copyright © 2012 Phil Hagelberg
+Copyright © 2012-2013 Phil Hagelberg
 
 Distributed under the Eclipse Public License, the same as Clojure.

@@ -16,6 +16,12 @@
                       [:timestamp :timestamp "NOT NULL"
                        "DEFAULT CURRENT_TIMESTAMP"])))
 
+(defn add-column []
+  (sql/with-connection (or (System/getenv "DATABASE_URL")
+                           "postgres://localhost:5432/lein-survey")
+    (sql/do-commands "ALTER TABLE answers ADD COLUMN edition INTEGER")
+    (sql/do-commands "UPDATE answers SET edition = 2012")))
+
 (defn record [params]
   (sql/with-connection (or (System/getenv "DATABASE_URL")
                            "postgres://localhost:5432/lein-survey")
@@ -35,6 +41,10 @@
         {:status 200
          :headers {"Content-type" "application/x-clojure"}
          :body (results/results-str)}
+        (= "/results/2012" (:uri req))
+        {:status 200
+         :headers {"Content-type" "text/html"}
+         :body (render/layout (results/summary))}
         (= "/results" (:uri req))
         {:status 200
          :headers {"Content-type" "text/html"}

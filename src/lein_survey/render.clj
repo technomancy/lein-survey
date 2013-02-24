@@ -1,6 +1,6 @@
 (ns lein-survey.render
-  (:use [hiccup.page-helpers :only [html5 doctype include-css]]
-        [hiccup.form-helpers :only [form-to label text-field submit-button]]))
+  (:use [hiccup.page :only [html5 doctype include-css]]
+        [hiccup.form :only [form-to label text-field submit-button]]))
 
 (def input nil) ; dang it defonce semantics!
 (defmulti input second)
