@@ -38,13 +38,20 @@
                   "aliases"
                   "checkout dependencies"
                   "editor/IDE integration"
-                  "javac task"
                   "native dependencies"
                   "auto-cleaning of transitively-compiled .class files"
                   "pom task (other than for Clojars)"
                   "CLI repl"
                   "test selectors"
                   "trampoline task"]]
+                ["Do you use Leiningen for any mixed-language projects?" :check
+                 ["Only Clojure"
+                  "Clojure with Clojurescript"
+                  "Only Clojurescript"
+                  "Clojure with Java"
+                  "Clojure with another JVM language"
+                  "Plain Java"
+                  "Another JVM language alone"]]
                 ["Favourite plugins? (comma-separated)" :textarea 2]
                 ["Favourite templates? (comma-separated)" :textarea 2]
                 ["What annoys you about Leiningen?" :check
