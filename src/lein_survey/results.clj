@@ -23,7 +23,7 @@
     (sql/with-query-results results ["select * from answers"]
       (pr-str (map merge-results results)))))
 
-(def results-url (java.net.URL. "http://lein-survey.herokuapp.com/results.clj"))
+(def results-url (java.net.URL. "http://lein-survey-2013.herokuapp.com/results.clj"))
 
 (defonce get-results
   (memoize (fn [] (read-string (slurp results-url)))))

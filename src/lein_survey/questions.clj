@@ -69,6 +69,7 @@
                          "I have one, but I've never used it"
                          "I've been meaning to get one"
                          "No"]]
+                ;; TODO: distinguish between "no tasks" and "yes, published"
                 ["Do you have custom tasks you haven't published as a plugin?"
                  :radio ["Yes" "No"]]
                 [(str "Did you know if you have a single patch accepted you can"
