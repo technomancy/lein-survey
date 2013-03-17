@@ -37,7 +37,7 @@
   (subs (DigestUtils/shaHex q) 10))
 
 (defn commentary [q]
-  (if-let [c (io/resource (str "commentary/" (hash-question q)))]
+  #_(if-let [c (io/resource (str "commentary/" (hash-question q)))]
     [:p (slurp c)]))
 
 (defn img-link [q]
@@ -74,7 +74,7 @@
      (commentary q)]))
 
 (defmethod summarize-question :textarea [results [q _ choices]]
-  (if (= q "Other comments?")
+  #_(if (= q "Other comments?")
     [:div.answer
      (slurp (io/resource "comments.html"))]))
 
@@ -97,15 +97,15 @@
   (let [results (get-results)]
     (into [:div.summary
            [:h3 "Data and commentary on the results"]
-           [:p "The survey has been open since the 16th of January,"
+           [:p "Commentary coming soon..."]
+           #_[:p "The survey has been open since the 15th of March,"
             " but it hasn't closed, so the quantatative summaries below"
             " will reflect new responses as they trickle in."
             " Most questions allowed more than one answer, so percentages"
             " will not add up to 100."]
            [:p "It may be interesting to compare some of these results "
             "with Chas Emerick's "
-            [:a {:href (str "http://cemerick.com/2011/07/11/results-of-the-"
-                            "2011-state-of-clojure-survey/")}
+            [:a {:href "http://cemerick.com/2012/08/06/results-of-the-2012-state-of-clojure-survey/"}
              "State of Clojure"] " survey from last summer."]
            [:p "You can see "
             [:a {:href "https://github.com/technomancy/lein-survey"}
