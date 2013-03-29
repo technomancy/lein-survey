@@ -3,6 +3,7 @@
             [lein-survey.questions :as q]
             [lein-survey.results :as results]
             [ring.adapter.jetty :as jetty]
+            [ring.util.response :as res]
             [clojure.java.jdbc :as sql]
             [clojure.java.io :as io]
             [ring.middleware.params :as params]))
@@ -45,9 +46,6 @@
         {:status 200
          :headers {"Content-type" "text/plain"}
          :body (results/comments)}
-        {:status 200
-         :headers {"Content-type" "text/html"}
-         :body (render/layout (results/summary))}
         (= "/results" (:uri req))
         {:status 200
          :headers {"Content-type" "text/html"}
@@ -58,7 +56,8 @@
          :headers {"Content-type" "text/css"}
          :body (slurp (io/resource (str "public/" (:uri req))))}
         (= "/" (:uri req))
-        {:status 200
+        (res/redirect "/results")
+        #_{:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (render/questions-form q/questions))}))
 
