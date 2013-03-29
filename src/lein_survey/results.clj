@@ -28,16 +28,11 @@
 (defonce get-results
   (memoize (fn [] (read-string (slurp results-url)))))
 
-(defn total []
-  (clojure.java.jdbc/with-connection (System/getenv "DATABASE_URL")
-    (clojure.java.jdbc/with-query-results res ["select count(*) from answers"]
-      (println res))))
-
 (defn hash-question [q]
   (subs (DigestUtils/shaHex q) 10))
 
 (defn commentary [q]
-  #_(if-let [c (io/resource (str "commentary/" (hash-question q)))]
+  (if-let [c (io/resource (str "commentary/2013/" (hash-question q)))]
     [:p (slurp c)]))
 
 (defn img-link [q]
@@ -65,8 +60,6 @@
         freqs (frequencies results-sets)]
     [:div.answer
      [:img {:src (img-link q) :align "right"}]
-     (if (= q "Your OS and package manager(s)")
-       [:img {:src (img-link (str q "-2")) :align "right"}])
      [:h4.question q]
      [:dl (apply concat (for [choice choices]
                           [[:dt choice] [:dd (percent-freqs
@@ -74,9 +67,9 @@
      (commentary q)]))
 
 (defmethod summarize-question :textarea [results [q _ choices]]
-  #_(if (= q "Other comments?")
+  (if (= q "Other comments?")
     [:div.answer
-     (slurp (io/resource "comments.html"))]))
+     (slurp (io/resource "commentary/2013/other.html"))]))
 
 (defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
@@ -97,12 +90,14 @@
   (let [results (get-results)]
     (into [:div.summary
            [:h3 "Data and commentary on the results"]
-           [:p "Commentary coming soon..."]
-           #_[:p "The survey has been open since the 15th of March,"
+           [:p "The survey has been open since the 22nd of February"
             " but it hasn't closed, so the quantatative summaries below"
             " will reflect new responses as they trickle in."
             " Most questions allowed more than one answer, so percentages"
-            " will not add up to 100."]
+            " will not add up to 100. At the time of this writing,"
+            " (28 March) there were just over 500 responses."]
+           [:p [:a {:href "http://lein-survey-2012.herokuapp.com"}
+                "Last year's survey is still up."]]
            [:p "It may be interesting to compare some of these results "
             "with Chas Emerick's "
             [:a {:href "http://cemerick.com/2012/08/06/results-of-the-2012-state-of-clojure-survey/"}
@@ -142,10 +137,8 @@
                :when (result-set name)]
            type))))
 
-(def pie-overrides {"Your OS and package manager(s)" os-lookup})
-
 (defn pie
-  ([q results] (pie q results (pie-overrides q (fn [q result] (get result q)))))
+  ([q results] (pie q results (fn [q result] (get result q))))
   ([q results lookup]
      (let [freqs (dissoc (frequencies (map (partial lookup q) results))
                          nil "I don't remember" #{})

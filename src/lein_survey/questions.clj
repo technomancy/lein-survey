@@ -21,7 +21,9 @@
                   "Solaris" "BSD" "other"]]
                 ["What package managers do you use?" :check
                  ["apt" "yum" "nix" "portage" "pacman"
+                  ;; TODO: remove fink
                   "BSD ports" "homebrew" "macports" "fink"]]
+                ;; TODO: add "through my IDE" option
                 ["How do you install Leiningen?" :check
                  ["Downloading bin/lein"
                   "Package manager"
@@ -54,6 +56,7 @@
                   "Another JVM language alone"]]
                 ["Favourite plugins? (comma-separated)" :textarea 2]
                 ["Favourite templates? (comma-separated)" :textarea 2]
+                ;; TODO: re-word to emphasize being specific in other comments
                 ["What annoys you about Leiningen?" :check
                  ["startup time"
                   "difficulty finding dependencies"
@@ -69,7 +72,7 @@
                          "I have one, but I've never used it"
                          "I've been meaning to get one"
                          "No"]]
-                ;; TODO: distinguish between "no tasks" and "yes, published"
+                ;; TODO: remove for next year
                 ["Do you have custom tasks you haven't published as a plugin?"
                  :radio ["Yes" "No"]]
                 [(str "Did you know if you have a single patch accepted you can"

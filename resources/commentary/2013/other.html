@@ -1,0 +1,85 @@
+<h4>Other Comments Summarized</h4>
+
+<p>Lots of just generally positive comments here, so thanks everyone!
+  You're the best. People love the logo, which of course I
+  can't <a href="http://lorenbroach.com">take credit for</a>.</p>
+
+<p>A few people mentioned the complexity of the internals, and I
+  completely agree that there are a few places in which things have
+  gotten out of hand. Nobody feels this more keenly than I do. The
+  logic for merging profiles and applying middleware in particular is
+  treacherously subtle. Luckily it's fairly isolated, so unless you're
+  specifically touching profile logic you can ignore it, but profiles
+  are a big part of what makes Leiningen flexible. In the back of my
+  head I'm already planning what can be done for Leiningen 3, and
+  rewriting profile logic is on the top of the list.</p>
+
+<p>There were some complaints about Windows support, but recent
+  patches (some mentioned above) from David Powell seem to go a fair
+  ways towards addressing these. In particular the installation
+  situation is a lot nicer in 2.1.</p>
+
+<blockquote>I'm never quite sure what I need to do to successfully
+  publish or use a SNAPSHOT release. I don't know how to force Leiningen
+  to download a new version of a SNAPSHOT.</blockquote>
+
+<p>You can do this with <code>lein -U deps</code>, which is an alias
+  for <code>lein with-profiles update deps</code>, but this should
+  probably be in the FAQ. There are a few features like this tucked
+  away that are not very discoverable; it's difficult to know how to
+  expose them.</p>
+
+<blockquote>In desperate need of a proper release plugin.</blockquote>
+
+<p>I'd punted on the automation of bumping version numbers since for a
+  long time there was no way to read Clojure code in a way that
+  preserved comments for round-tripping, but
+  now <a href="https://github.com/cgrand/sjacket">that exists</a>, so
+  no more excuses! This should probably begin life as a third-party
+  plugin and get merged to Leiningen once it's polished and matured
+  though.</p>
+
+<p>There were some complaints about the difficulty of getting started
+  with GPG, but Leiningen 2.1
+  now <a href="https://github.com/technomancy/leiningen/blob/master/doc/GPG.md">ships
+  with a GPG guide</a> which should help a lot on that front.</p>
+
+<blockquote>One thing that would be of interest to me, is a blog post
+  or series on leiningen's internal design (if one doesn't already
+  exist).</blockquote>
+
+<p>Daniel Higginbotham has started a series on how Leiningen works
+  starting
+  with <a href="http://www.flyingmachinestudios.com/programming/how-clojure-babies-are-made-lein-run/">a
+  post on lein run</a> and a follow-up
+  on <a href="http://www.flyingmachinestudios.com/programming/lein-trampoline/">trampoline</a>
+  that has done a great job covering tricky topics so far.</p>
+
+<blockquote>Lein deps :tree should highlight conflicting
+  dependencies.</blockquote>
+
+<p>This can be done currently by
+  the <a href="https://github.com/xeqi/lein-pedantic">lein-pedantic</a>
+  plugin, but there's no reason it couldn't be included in Leiningen
+  proper as it's handy for debugging.</a>
+
+<blockquote>Other things that annoy me about leiningen is the lack of
+  phases. Having to rerun prep tasks before each task can be slow
+  [...] compiling with different profiles.</blockquote>
+
+<p>There's <a href="https://github.com/technomancy/leiningen/issues/468">an
+    open issue for this</a>; I don't think Maven-style phases are the
+    right solution here, but I agree that changing profiles shouldn't
+    force you to re-compile everything. I think by
+    isolating <code>:target-path</code> on a per-profile basis this
+    could be avoided. I hope to include this in version 2.2.</p>
+
+<blockquote>Don't know where to find all the plugins available and
+  what functions they have.</blockquote>
+
+<p>While it's not 100% complete, plugin authors are encouraged to add
+  their plugins
+  to <a href="https://github.com/technomancy/leiningen/wiki/Plugins">the
+    plugins page of the wiki</a>, so that's a great place to start.</p>
+
+<p><a href="/comments.txt">See all free-form comments</a>.</p>

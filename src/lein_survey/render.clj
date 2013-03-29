@@ -58,7 +58,7 @@
   (html5
    [:head
     [:meta {:charset "utf-8"}]
-    [:title "Leiningen Survey"]
+    [:title "Leiningen Survey: 2013"]
     (include-css "bootstrap.min.css"
                  "lein-survey.css"
                  "http://fonts.googleapis.com/css?family=Electrolize")]
@@ -66,7 +66,7 @@
     [:div.container
      [:div.content
       [:div.page-header
-       [:h1 "Leiningen Survey"]]
+       [:h1 "Leiningen Survey: 2013"]]
 
       [:div.row
        [:div.offset1

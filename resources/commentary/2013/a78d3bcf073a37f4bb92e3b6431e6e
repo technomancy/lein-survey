@@ -1,0 +1,1 @@
+The manual install remains far and away the most popular way to install. This is probably due to the fact that the Debian packages for Leiningen are taking a while due to the large number of prerequisites that need packaging. Volunteers very much welcome for that. I'm assuming everyone running from git is a contributor or intending to become one.
