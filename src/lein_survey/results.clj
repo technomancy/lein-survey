@@ -66,10 +66,24 @@
                                               freqs choice results)]]))]
      (commentary q)]))
 
+;; (->> (mapcat #(.split % "[, ]+") p)
+;;      (map #(string/replace % "lein-" ""))
+;;      (map (memfn toLowerCase))
+;;      (frequencies)
+;;      (reduce (fn [acc [f n]] (if (> n 1) (assoc acc f n) acc)) {})
+;;      (sort-by val)
+;;      (reverse)
+;;      (rest)
+;;      (pprint))
+
 (defmethod summarize-question :textarea [results [q _ choices]]
-  (if (= q "Other comments?")
-    [:div.answer
-     (slurp (io/resource "commentary/2013/other.html"))]))
+  [:div.answer (slurp (io/resource (case q
+                                     "Other comments?"
+                                     "commentary/2013/other.html"
+                                     "Favourite plugins? (comma-separated)"
+                                     "commentary/2013/plugins.html"
+                                     "Favourite templates? (comma-separated)"
+                                     "commentary/2013/templates.html")))])
 
 (defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
@@ -90,9 +104,8 @@
   (let [results (get-results)]
     (into [:div.summary
            [:h3 "Data and commentary on the results"]
-           [:p "The survey has been open since the 22nd of February"
-            " but it hasn't closed, so the quantatative summaries below"
-            " will reflect new responses as they trickle in."
+           [:p "The survey ran from the 22nd of February to the 28th of March."
+
             " Most questions allowed more than one answer, so percentages"
             " will not add up to 100. At the time of this writing,"
             " (28 March) there were just over 500 responses."]
