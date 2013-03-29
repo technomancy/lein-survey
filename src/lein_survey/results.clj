@@ -216,3 +216,8 @@
 
 (defn image [id]
   (java.io.ByteArrayInputStream. (image-bytes id)))
+
+(defn comments []
+  (string/join "\n----------------"
+               (for [{:keys [body]} (get-results)]
+                 (get body "Other comments?"))))

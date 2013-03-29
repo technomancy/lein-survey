@@ -41,7 +41,10 @@
         {:status 200
          :headers {"Content-type" "application/x-clojure"}
          :body (results/results-str)}
-        (= "/results/2012" (:uri req))
+        (= "/comments.txt" (:uri req))
+        {:status 200
+         :headers {"Content-type" "text/plain"}
+         :body (results/comments)}
         {:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (results/summary))}
@@ -64,4 +67,6 @@
 
 (defn -main []
   (let [port (Integer. (or (System/getenv "PORT") 5005))]
-    (jetty/run-jetty #'app {:port port})))
+    (jetty/run-jetty #'app {:port port :join? false})))
+
+;; (def server (-main))
