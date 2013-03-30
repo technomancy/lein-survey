@@ -66,12 +66,13 @@
                                               freqs choice results)]]))]
      (commentary q)]))
 
+;;; summarizing plugins
 ;; (->> (mapcat #(.split % "[, ]+") p)
 ;;      (map #(string/replace % "lein-" ""))
 ;;      (map (memfn toLowerCase))
 ;;      (frequencies)
-;;      (reduce (fn [acc [f n]] (if (> n 1) (assoc acc f n) acc)) {})
-;;      (sort-by val)
+;;      (filter (comp pos? dec second))
+;;      (sort-by second)
 ;;      (reverse)
 ;;      (rest)
 ;;      (pprint))
@@ -231,6 +232,6 @@
   (java.io.ByteArrayInputStream. (image-bytes id)))
 
 (defn comments []
-  (string/join "\n----------------"
-               (for [{:keys [body]} (get-results)]
+  (string/join "\n----------------\n"
+               (for [body (get-results)]
                  (get body "Other comments?"))))
