@@ -6,7 +6,8 @@
             [ring.util.response :as res]
             [clojure.java.jdbc :as sql]
             [clojure.java.io :as io]
-            [ring.middleware.params :as params]))
+            [ring.middleware.params :as params])
+  (:gen-class))
 
 (defn create-table []
   (sql/with-connection (or (System/getenv "DATABASE_URL")

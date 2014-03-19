@@ -1,1 +1,1 @@
-web: lein run -m lein-survey.web
+web: java $JAVA_OPTS -jar target/lein-survey-standalone.jar
