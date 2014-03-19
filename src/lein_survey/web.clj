@@ -51,11 +51,10 @@
         {:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (results/summary))}
-        ;; WTF wrap-resource; why are you trying to serve a directory?
         (re-find #"\.css$" (:uri req))
         {:status 200
          :headers {"Content-type" "text/css"}
-         :body (slurp (io/resource (str "public/" (:uri req))))}
+         :body (slurp (io/resource (str "public/" (subs (:uri req) 1))))}
         (= "/" (:uri req))
         #_(res/redirect "/results")
         {:status 200
