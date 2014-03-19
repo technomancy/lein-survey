@@ -57,8 +57,8 @@
          :headers {"Content-type" "text/css"}
          :body (slurp (io/resource (str "public/" (:uri req))))}
         (= "/" (:uri req))
-        (res/redirect "/results")
-        #_{:status 200
+        #_(res/redirect "/results")
+        {:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (render/questions-form q/questions))}))
 
