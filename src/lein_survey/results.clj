@@ -23,7 +23,7 @@
     (sql/with-query-results results ["select * from answers"]
       (pr-str (map merge-results results)))))
 
-(def results-url (java.net.URL. "http://lein-survey-2013.herokuapp.com/results.clj"))
+(def results-url (java.net.URL. "http://lein-survey-2014.herokuapp.com/results.clj"))
 
 (defonce get-results
   (memoize (fn [] (read-string (slurp results-url)))))
@@ -32,7 +32,7 @@
   (subs (DigestUtils/shaHex q) 10))
 
 (defn commentary [q]
-  (if-let [c (io/resource (str "commentary/2013/" (hash-question q)))]
+  (if-let [c (io/resource (str "commentary/2014/" (hash-question q)))]
     [:p (slurp c)]))
 
 (defn img-link [q]
@@ -80,11 +80,11 @@
 (defmethod summarize-question :textarea [results [q _ choices]]
   [:div.answer (slurp (io/resource (case q
                                      "Other comments?"
-                                     "commentary/2013/other.html"
+                                     "commentary/2014/other.html"
                                      "Favourite plugins? (comma-separated)"
-                                     "commentary/2013/plugins.html"
+                                     "commentary/2014/plugins.html"
                                      "Favourite templates? (comma-separated)"
-                                     "commentary/2013/templates.html")))])
+                                     "commentary/2014/templates.html")))])
 
 (defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
