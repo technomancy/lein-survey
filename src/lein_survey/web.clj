@@ -18,16 +18,10 @@
                       [:timestamp :timestamp "NOT NULL"
                        "DEFAULT CURRENT_TIMESTAMP"])))
 
-(defn add-column []
-  (sql/with-connection (or (System/getenv "DATABASE_URL")
-                           "postgres://localhost:5432/lein-survey")
-    (sql/do-commands "ALTER TABLE answers ADD COLUMN edition INTEGER")
-    (sql/do-commands "UPDATE answers SET edition = 2012")))
-
 (defn record [params]
   (sql/with-connection (or (System/getenv "DATABASE_URL")
                            "postgres://localhost:5432/lein-survey")
-    (sql/insert-values :answers [:body :edition] [(pr-str params) 2014]))
+    (sql/insert-values :answers [:body] [(pr-str params)]))
   (render/layout [:h1 "Thank you!"]))
 
 (defn handler [req]
