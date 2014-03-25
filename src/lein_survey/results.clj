@@ -39,9 +39,11 @@
   (format "/%s.png" (hash-question q)))
 
 (defn percent-freqs [f choice results]
-  (let [n (f choice)
+  (let [n (or (f choice) 0)
         total (count results)]
-    (format "%s (%s%%)" n (int (* 100 (/ n total))))))
+    (if (zero? total)
+      (format "0")
+      (format "%s (%s%%)" n (int (* 100 (/ n total)))))))
 
 (defmulti summarize-question (fn [results question] (second question)))
 
@@ -78,13 +80,14 @@
 ;;      (pprint))
 
 (defmethod summarize-question :textarea [results [q _ choices]]
-  [:div.answer (slurp (io/resource (case q
-                                     "Other comments?"
-                                     "commentary/2014/other.html"
-                                     "Favourite plugins? (comma-separated)"
-                                     "commentary/2014/plugins.html"
-                                     "Favourite templates? (comma-separated)"
-                                     "commentary/2014/templates.html")))])
+  (if-let [s (io/resource (case q
+                            "Other comments?"
+                            "commentary/2014/other.html"
+                            "Favourite plugins? (comma-separated)"
+                            "commentary/2014/plugins.html"
+                            "Favourite templates? (comma-separated)"
+                            "commentary/2014/templates.html"))]
+    [:div.answer (slurp s)]))
 
 (defmethod summarize-question :rank [results [q _ choices]]
   (let [freqs #(sort-by (comp first key)
@@ -105,16 +108,16 @@
   (let [results (get-results)]
     (into [:div.summary
            [:h3 "Data and commentary on the results"]
-           [:p "The survey ran from the 22nd of February to the 28th of March."
-
+           [:p ;; "The survey ran from the 24th of March to ..."
+            "The survey is still open; commentary will be posted once it closes."
             " Most questions allowed more than one answer, so percentages"
             " will not add up to 100. At the time of this writing,"
             " (28 March) there were just over 500 responses."]
-           [:p [:a {:href "http://lein-survey-2012.herokuapp.com"}
+           [:p [:a {:href "http://lein-survey-2013.herokuapp.com"}
                 "Last year's survey is still up."]]
            [:p "It may be interesting to compare some of these results "
             "with Chas Emerick's "
-            [:a {:href "http://cemerick.com/2012/08/06/results-of-the-2012-state-of-clojure-survey/"}
+            [:a {:href "http://cemerick.com/2013/11/05/2013-state-of-clojure-clojurescript-survey/"}
              "State of Clojure"] " survey from last summer."]
            [:p "You can see "
             [:a {:href "https://github.com/technomancy/lein-survey"}

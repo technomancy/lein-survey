@@ -22,7 +22,9 @@
   (sql/with-connection (or (System/getenv "DATABASE_URL")
                            "postgres://localhost:5432/lein-survey")
     (sql/insert-values :answers [:body] [(pr-str params)]))
-  (render/layout [:h1 "Thank you!"]))
+  (render/layout [:div
+                  [:h1 "Thank you!"]
+                  [:p "Check back in a few weeks to see the results."]]))
 
 (defn handler [req]
   (cond (= :post (:request-method req))
