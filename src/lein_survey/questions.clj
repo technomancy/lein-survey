@@ -14,11 +14,12 @@
                   "Solaris" "BSD" "other"]]
                 ["What package managers do you use?" :check
                  ["apt" "yum" "nix" "portage" "pacman"
-                  "BSD ports" "homebrew" "macports"]]
+                  "BSD ports" "homebrew" "macports" "choclatey"]]
                 ["How do you install Leiningen?" :check
                  ["Downloading bin/lein"
                   "Package manager"
                   "Through IDE integration"
+                  "Windows installer"
                   "From git"]]
                 ["What JVM versions you use regularly?  (java -version)" :check
                  ["1.6.0" "1.7.0" "1.8.0" "prereleases from source"]]

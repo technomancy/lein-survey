@@ -111,8 +111,7 @@
            [:p ;; "The survey ran from the 24th of March to ..."
             "The survey is still open; commentary will be posted once it closes."
             " Most questions allowed more than one answer, so percentages"
-            " will not add up to 100. At the time of this writing,"
-            " (28 March) there were just over 500 responses."]
+            " will not add up to 100."]
            [:p [:a {:href "http://lein-survey-2013.herokuapp.com"}
                 "Last year's survey is still up."]]
            [:p "It may be interesting to compare some of these results "
