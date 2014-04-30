@@ -1,0 +1,1 @@
+It's now nearly as common to use Leiningen for Clojure+Clojurescript projects as it is to use it for Clojure alone. Pure Clojurescript projects have also doubled to 14% from last year. Other numbers seem mostly unchanged; there are still a ton of Clojure projects that contain Java source.

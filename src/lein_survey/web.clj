@@ -27,10 +27,10 @@
                   [:p "Check back in a few weeks to see the results."]]))
 
 (defn handler [req]
-  (cond (= :post (:request-method req))
-        {:status 201
-         :headers {"Content-type" "text/html"}
-         :body (record (:params req))}
+  (cond ;; (= :post (:request-method req))
+        ;; {:status 201
+        ;;  :headers {"Content-type" "text/html"}
+        ;;  :body (record (:params req))}
         (re-find #"^/.*\.png$" (:uri req))
         {:status 200
          :headers {"Content-type" "image/png"}
@@ -52,8 +52,8 @@
          :headers {"Content-type" "text/css"}
          :body (slurp (io/resource (str "public/" (subs (:uri req) 1))))}
         (= "/" (:uri req))
-        #_(res/redirect "/results")
-        {:status 200
+        (res/redirect "/results")
+        #_{:status 200
          :headers {"Content-type" "text/html"}
          :body (render/layout (render/questions-form q/questions))}))
 

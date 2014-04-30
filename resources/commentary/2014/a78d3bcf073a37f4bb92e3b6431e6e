@@ -1,0 +1,1 @@
+The number of people using their package manager has risen, which is a good sign that typically-lagging packagers are catching up to Leiningen. Unfortunately the version of Leiningen in apt-get is too old to be usable, which is undoubtedly a big part of why the bin/lein share is so big. The newer Windows installer and IDE integration choices remain relatively obscure.
