@@ -1,0 +1,57 @@
+<h4>Other Comments Summarized</h4>
+
+<p>Not a whole lot of suggestions were submitted. I feel like that
+  might be a sign that Leiningen has matured a fair bit
+  recently. There's not much missing for most people.</p>
+
+<p>There were a few comments about how it's more cumbersome than it
+  could be to publish and consume private dependencies. We've added
+  documentation for how to deploy over <tt>scp</tt> in the latest
+  release, so hopefully that simplifies things for users who already
+  have servers set up. The existing infrastrucutre around SSH key
+  pairs is much better than what we have for S3 buckets.</p>
+
+<blockquote>I miss some functionality to have a task auto run if one
+  of it's source files are changed.</blockquote>
+
+<p>For a while, we had a number of plugins that rolled their own
+  support for this, which was really unfortunate. But these days
+  there's a plugin that provides a higher-order task for this so the
+  auto-re-run functionality is decoupled from a specific task, which
+  is great. We might consider including this in a future version of
+  Leiningen to increase its visibility.</p>
+
+<blockquote>Plugin and template authors are writing code that hijacks
+ (or makes assumptions) about the operating context, yielding unstable
+ and unpredictable results.  The simple answer is "don't use plugins,"
+ except that's one of the major use-cases for leiningen to begin
+ with.o</blockquote>
+
+<p>Leiningen allows plugins to declare hooks and middleware (which you
+  can disable) that can run arbitrary code even when their own plugin
+  task isn't being invoked. Since the effects of these hooks are not
+  transparent or obvious, they're intended as a measure of last resort
+  to allow for workarounds in situations where the built-in extension
+  mechanisms aren't cutting it, but it appears that some plugins are
+  taking it beyond that, which is unfortunate.</p>
+
+<p>Dependencies that include native code continue to be a weakness
+  since no one on the Leiningen team actually uses them. Unless
+  someone familiar with native libraries on the JVM steps up to
+  help, this will likely continue.</p>
+
+<blockquote>I think lein-exec is so useful, that it would nice to have
+  it folded in to the 'core' functionality.</blockquote>
+
+<p>This is basically already included as part of the run
+  task. <kbd>lein run -m clojure.main -i /path/to/file.clj</kbd> will
+  load it. Since aliases can be partially applied, you can shorten
+  this too: <kbd>:aliases {"exec" ["run" "-m" "clojure.main" "-i"]}</kbd></p>
+
+<blockquote>Leiningen has been the single most important tool for increasing
+  Clojure adoption.</blockquote>
+
+<p>Overall the feedback has been very positive, so thanks for being
+  great users.</p>
+
+<p><a href="/comments.txt">See all free-form comments</a>.</p>

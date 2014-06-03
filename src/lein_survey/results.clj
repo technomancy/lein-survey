@@ -109,12 +109,12 @@
     (into [:div.summary
            [:h3 "Data and commentary on the results"]
            [:p "The survey ran from the 24th of March to the end of April. "
-            "A final summary of commentary will be posted soon."
-            ;; "The survey is still open; commentary will be posted once it closes."
+            ;; "A final summary of commentary will be posted soon."
+            ;; " The survey is still open; commentary will be posted once it closes."
             " Most questions allowed more than one answer, so percentages"
             " will not add up to 100."]
            [:p [:a {:href "http://lein-survey-2013.herokuapp.com"}
-                "Last year's survey is still up."]]
+                "Last year's survey results are still up."]]
            [:p "It may be interesting to compare some of these results "
             "with Chas Emerick's "
             [:a {:href "http://cemerick.com/2013/11/05/2013-state-of-clojure-clojurescript-survey/"}
